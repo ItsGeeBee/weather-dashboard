@@ -2,7 +2,6 @@ const apiKey = "bca39c92efc2381243d7834988122221";
 var searchbtn = document.querySelector('#searchBtn');
 var citySearch = document.querySelector('#citySearch');
 var searchHistory = document.querySelector('#searchHistory');
-var weatherContent = document.querySelector('#weathercontent');
 var previousCities = [];
 const presentDay = moment().format('LL');
 
@@ -30,7 +29,7 @@ function currentWeather(city) {
        <p>Wind Speed: ${storedSearch.wind.speed} KPH</p>
        <p>Humidity: ${storedSearch.main.humidity}\%</p>`);
 
-       weatherContent.append(cityCurrent);
+       $("#weatherContent").append(cityCurrent); // apend to HTMl - BCS help 
         });
        } })
   } 
