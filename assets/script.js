@@ -8,7 +8,7 @@ const presentDay = moment().format('LL');
 
 // function for current weather condition 
 function currentWeather(city) {
-  let weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`; // interpolate d3cf cvcviables
+  let weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`; // interpolate variables
   // 'fetch' data from URL
   fetch(weatherURL) .then(function (response) {
       if (response.ok) { // check is response is okay
@@ -17,9 +17,11 @@ function currentWeather(city) {
       console.log(storedSearch);
      
        
-  let icon = storedSearch.weather[0].icon;
-  let iconURL = `https://openweathermap.org/img/w/${icon}.png`;
+  let icon = storedSearch.weather[0].icon; // icon parameter 
+  let iconURL = `https://openweathermap.org/img/w/${icon}.png`; // API call for Icon 
 
+
+  // Create text to apend using template literals 
   let cityCurrent =  
        $(`<h4 id="cityCurrent"> ${storedSearch.name} ${presentDay} <img src="${iconURL}"/></h4>
        <p>Temperature: ${storedSearch.main.temp} °C</p>
@@ -27,6 +29,8 @@ function currentWeather(city) {
        <p>Humidity: ${storedSearch.main.humidity}\%</p>`);
 
        $("#weatherContent").append(cityCurrent); // append to HTMl - BCS help 
+
+       // Set variable for use in getting UV index 
        let lat = storedSearch.coord.lat;
        let lon = storedSearch.coord.lon;
        console.log(lat,lon);
@@ -39,26 +43,39 @@ function currentWeather(city) {
 // function for 5 day forecast 
   function  forecast (city) {
 
-  let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;  
+  let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;  // API call
   console.log(forecastURL);
   // 'fetch' data from URL
   fetch(forecastURL) 
     .then(function (response) {
 
-      return response.json();
+      return response.json(); // to retrive Object 
   
      })
     .then(function (data) {
-        console.log(data);
-       for (let i = 0; i < data.length; i+=8) {
+      for (let i = 0; i < data.list.length; i+=8) { // limited to every 8 hours to avoid showing multipe weather stamps for same day 
 
-        let date = response.day[i].dt;
+    let date = data.list[i].dt_txt
+    let curDate = moment(date).format('DDMMM'); // format through Moment.js
+    let temperature = data.list[i].main.temp
+    let wind = data.list[i].wind.speed
+    let humidity = data.list[i].main.humidity
+    
+    
+    // Create text to apend using template literals 
+    let forecastCard =
 
-        console.log(date);
+    $(`<div class='col-2'>
+      <h4 id="fiveDay"> ${curDate}</h4>
+      <p>Temperature: ${temperature} °C</p>
+      <p>Wind Speed: ${wind} KPH</p>
+      <p>Humidity: ${humidity}\%</p>
+      </div>`);
 
-      // $("#fiveDay").append(`<h4 id="cityForecast">${date}</h4>`);
-    }}
-    )};
+    $("#fiveDay").append(forecastCard);
+    }
+  })
+};
 
 
 // Submit function for user inout city //
