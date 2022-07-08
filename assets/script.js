@@ -4,6 +4,7 @@ let citySearch = document.querySelector('#citySearch');
 let previousCities = [];
 let weatherContent = document.querySelector('#weatherContent');
 const presentDay = moment().format('LL');
+let fiveDayContainer = $('#fiveDay');
 
 
 // function for current weather condition 
@@ -35,10 +36,25 @@ function currentWeather(city) {
        let lon = storedSearch.coord.lon;
        console.log(lat,lon);
 
+    const uvURL =`http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;// UV index API call
+
+    fetch(uvURL) .then(function (uvIndex) {
+      if (uvIndex.ok) { // check is response is okay
+      console.log(uvIndex);
+      uvIndex.json().then(function (uvData) { // json to retreieve object 
+      console.log(uvData);
+
+      let  currUV = uvData.value
+
+      let uvContainer = $(`<p>UV Index: <span id='uvColour'>${currUV}</span></p>`);
+
+        $("#weatherContent").append(uvContainer);   
+
     forecast(city);
     });
   }})
-};
+})};
+  })};
 
 // function for 5 day forecast 
   function  forecast (city) {
@@ -90,6 +106,8 @@ function inputCity(event){
     localStorage.setItem("city", JSON.stringify(previousCities));// stringify to store in local storage 
 
     weatherContent.innerHTML="";
+    fiveDayContainer.innerHTML="";
+
 
     let history = $(`<li">${city}</li>`);
     $("#searchHistory").append(history);
