@@ -2,3 +2,18 @@
 
     display: block;
 }
+
+.favorable {
+
+    background-color: rgba(128, 239, 147, 0.933);
+}
+
+.moderate {
+
+    background-color: rgb(239, 239, 141);
+}
+
+.severe {
+
+    background-color: rgba(248, 75, 75, 0.76);
+}

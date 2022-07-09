@@ -4,7 +4,7 @@ let citySearch = document.querySelector('#citySearch');
 let previousCities = [];
 let weatherContent = document.querySelector('#weatherContent');
 const presentDay = moment().format('LL');
-let fiveDayContainer = $('#fiveDay');
+let fiveDayContainer = document.querySelector('#fiveDay');
 
 
 // function for current weather condition 
@@ -46,15 +46,26 @@ function currentWeather(city) {
 
       let  currUV = uvData.value
 
-      let uvContainer = $(`<p>UV Index: <span id='uvColour'>${currUV}</span></p>`);
+      let uvContainer = $(`<p>UV Index: <button id='uvColour'>${currUV}</button></p>`);
 
-        $("#weatherContent").append(uvContainer);   
+        $("#weatherContent").append(uvContainer);  
+        
+        if (currUV > 7) {
+          $("#uvColour").removeClass("moderate favorable");
+          $("#uvColour").addClass("severe");
+        } else if (currUV >=4 && currUV <=7) {
+          $("#uvColour").removeClass("severe favorable");
+          $("#uvColour").addClass("moderate");
+        } else if (currUV <= 3) { 
+          $("#uvColour").removeClass("severe moderate");
+          $("#uvColour").addClass("favorable");
+        }  
 
-    forecast(city);
-    });
-  }})
-})};
+      forecast(city);
+      });
+    }})
   })};
+})};
 
 // function for 5 day forecast 
   function  forecast (city) {
@@ -69,7 +80,8 @@ function currentWeather(city) {
   
      })
     .then(function (data) {
-      for (let i = 0; i < data.list.length; i+=8) { // limited to every 8 hours to avoid showing multipe weather stamps for same day 
+      console.log(data);
+      for (let i = 8; i < data.list.length; i+=7) { // limited to every 8 hours to avoid showing multipe weather stamps for same day 
 
     let date = data.list[i].dt_txt
     let curDate = moment(date).format('DDMMM'); // format through Moment.js
@@ -109,7 +121,7 @@ function inputCity(event){
     fiveDayContainer.innerHTML="";
 
 
-    let history = $(`<li">${city}</li>`);
+    let history = $(`<button>`).text(city);
     $("#searchHistory").append(history);
 
 
@@ -117,7 +129,15 @@ function inputCity(event){
    
 };
 
+$("#searchHistory").on("click","button",function(){
+  weatherContent.innerHTML="";
+  fiveDayContainer.innerHTML="";
+
+let savedCity= $(this).text();
+currentWeather(savedCity);
+
+})
+
 // event listener //
 searchbtn.addEventListener('click', inputCity);
-
 
