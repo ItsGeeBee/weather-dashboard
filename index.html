@@ -23,31 +23,35 @@
     <div class="col-12">
         <h4>Search for a City:</h4>
     </div> </div>
-    <div class="row">
-    <div class="col-12">
+    <form class="row">
+    <div class="d-grid gap-2">
     <div class="input-group">
     <input class="form-control"id="citySearch" type="text" placeholder="City Name">
     <button type="button" id="searchBtn" class="btn btn-primary">Search</button>
     </div></div>
-    </div>
+    </from>
 
  <!--search history to be appended here -->
     <div class="row">
     <div class="col-12">
     <ul id="searchHistory" class="list-group">
     </ul>
+    <div>
+        <button id="clear" class="btn btn-secondary">Clear List</button>
+    </div>
     </div></div>
     </div>
 
     <!-- current city information -->
     <div id="showCurrent" class="col-9 pb-4 pt-4">
     <div class="row pb-3 mr-2 ml-2">
+        <h3>Current Weather:</h3>
     <div class="col-12 border rounded px-3 py-3" id="weatherContent" >
     </div></div>
 
     <div class="row pb-2 pt-1">
         <div class="col-12 ml-2">
-        <h3>Forecast:</h3>
+        <h3>5 Day Forecast:</h3>
          </div></div>
        
     <div id="fiveDay" class="row pl-2">
