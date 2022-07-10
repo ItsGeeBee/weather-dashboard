@@ -70,7 +70,7 @@ function currentWeather(city) {
 // function for 5 day forecast 
   function  forecast (city) {
 
-  let forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;  // API call
+  let forecastURL = ` https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&exclude=hourly&appid=${apiKey}`;  // API call
   console.log(forecastURL);
   // 'fetch' data from URL
   fetch(forecastURL) 
@@ -81,20 +81,22 @@ function currentWeather(city) {
      })
     .then(function (data) {
       console.log(data);
-      for (let i = 8; i < data.list.length; i+=7) { // limited to every 8 hours to avoid showing multipe weather stamps for same day 
+      for (let i = 3; i < data.list.length; i+=8) { // limited to every 8 hours to avoid showing multipe weather stamps for same day 
 
     let date = data.list[i].dt_txt
     let curDate = moment(date).format('DDMMM'); // format through Moment.js
     let temperature = data.list[i].main.temp
     let wind = data.list[i].wind.speed
     let humidity = data.list[i].main.humidity
+    let icon = data.list[i].weather[0].icon
     
-    
+    var iconURL = `<img src="https://openweathermap.org/img/w/${icon}.png"/>`
     // Create text to apend using template literals 
     let forecastCard =
 
     $(`<div class='col-2'>
       <h4 id="fiveDay"> ${curDate}</h4>
+      <p>${iconURL}</p>
       <p>Temperature: ${temperature} °C</p>
       <p>Wind Speed: ${wind} KPH</p>
       <p>Humidity: ${humidity}\%</p>
@@ -129,7 +131,8 @@ function inputCity(event){
    
 };
 
-$("#searchHistory").on("click","button",function(){
+$("#searchHistory").on("click","button",function(event){
+  event.preventDefault();
   weatherContent.innerHTML="";
   fiveDayContainer.innerHTML="";
 
