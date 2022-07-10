@@ -36,7 +36,7 @@ function currentWeather(city) {
        let lon = storedSearch.coord.lon;
        console.log(lat,lon);
 
-    const uvURL =`http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;// UV index API call
+    const uvURL =`https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;// UV index API call
 
     fetch(uvURL) .then(function (uvIndex) {
       if (uvIndex.ok) { // check is response is okay
