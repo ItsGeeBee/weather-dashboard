@@ -120,7 +120,7 @@ function inputCity(event){
     let city = citySearch.value.trim(""); // extract input data 
   
     previousCities.push(city); // push to array 
-
+  
     // stringify to store in local storage, user is prompted with previous searches when they click on input 
     localStorage.setItem("city", JSON.stringify(previousCities));
 
@@ -150,14 +150,15 @@ currentWeather(savedCity);
 // event listener //
 searchbtn.addEventListener('click', inputCity);
 
-
-$("#clear").on("click","button",function(event){ 
+// clear search history
+$("#clear").on("click",function(event){ 
   event.preventDefault();
-  previousCities=[];
+  $('#searchHistory').html('');
+  localStorage.clear();
  });
 
 
-// On page load, show last searched city 
+// On page load, show last searched city by using local storage 
 $(document).ready(function() {
   let previousCitiesArray = JSON.parse(localStorage.getItem("city"))
   let lastsearched = previousCitiesArray.length -1;
