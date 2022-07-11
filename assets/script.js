@@ -5,6 +5,7 @@ let previousCities = [];
 let weatherContent = document.querySelector('#weatherContent');
 const presentDay = moment().format('LL');
 let fiveDayContainer = document.querySelector('#fiveDay');
+let clearHistory = document.querySelector('#clear');
 
 
 // function for current weather condition 
@@ -44,12 +45,13 @@ function currentWeather(city) {
       uvIndex.json().then(function (uvData) { // json to retreieve object 
       console.log(uvData);
 
-      let  currUV = uvData.value
+      let  currUV = uvData.value //get the value of the uvData response
 
-      let uvContainer = $(`<p>UV Index: <button id='uvColour'>${currUV}</button></p>`);
+      let uvContainer = $(`<p>UV Index: <button id='uvColour'>${currUV}</button></p>`); // uv colour container
 
-        $("#weatherContent").append(uvContainer);  
+        $("#weatherContent").append(uvContainer);  // append to html
         
+      // adding css class dependant on the current UV value  
         if (currUV > 7) {
           $("#uvColour").removeClass("moderate favorable");
           $("#uvColour").addClass("severe");
@@ -90,7 +92,9 @@ function currentWeather(city) {
     let humidity = data.list[i].main.humidity
     let icon = data.list[i].weather[0].icon
     
-    var iconURL = `<img src="https://openweathermap.org/img/w/${icon}.png"/>`
+    let iconURL = `<img src="https://openweathermap.org/img/w/${icon}.png"/>`
+    
+    
     // Create text to apend using template literals 
     let forecastCard =
 
@@ -117,13 +121,14 @@ function inputCity(event){
   
     previousCities.push(city); // push to array 
 
-    localStorage.setItem("city", JSON.stringify(previousCities));// stringify to store in local storage 
+    // stringify to store in local storage, user is prompted with previous searches when they click on input 
+    localStorage.setItem("city", JSON.stringify(previousCities));
 
-    weatherContent.innerHTML="";
+    weatherContent.innerHTML=""; // clear current page content on click 
     fiveDayContainer.innerHTML="";
 
 
-    let history = $(`<button>`).text(city);
+    let history = $(`<button>`).text(city); // append search city to page 
     $("#searchHistory").append(history);
 
 
@@ -131,6 +136,7 @@ function inputCity(event){
    
 };
 
+// Search history click function
 $("#searchHistory").on("click","button",function(event){
   event.preventDefault();
   weatherContent.innerHTML="";
@@ -144,3 +150,18 @@ currentWeather(savedCity);
 // event listener //
 searchbtn.addEventListener('click', inputCity);
 
+
+$("#clear").on("click","button",function(event){ 
+  event.preventDefault();
+  previousCities=[];
+ });
+
+
+// On page load, show last searched city 
+$(document).ready(function() {
+  let previousCitiesArray = JSON.parse(localStorage.getItem("city"))
+  let lastsearched = previousCitiesArray.length -1;
+  let lastcity = previousCitiesArray[lastsearched];
+  currentWeather(lastcity);
+
+});
