@@ -72,7 +72,7 @@ function currentWeather(city) {
 // function for 5 day forecast 
   function  forecast (city) {
 
-  let forecastURL = ` https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&exclude=hourly&appid=${apiKey}`;  // API call
+  let forecastURL = ` https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;  // API call
   console.log(forecastURL);
   // 'fetch' data from URL
   fetch(forecastURL) 
@@ -83,7 +83,7 @@ function currentWeather(city) {
      })
     .then(function (data) {
       console.log(data);
-      for (let i = 3; i < data.list.length; i+=8) { // limited to every 8 hours to avoid showing multipe weather stamps for same day 
+      for (let i = 4; i < data.list.length; i+=8) { // limited to every 8 hours to avoid showing multipe weather stamps for same day 
 
     let date = data.list[i].dt_txt
     let curDate = moment(date).format('DDMMM'); // format through Moment.js
